@@ -1,0 +1,2 @@
+/usr/bin/ar cr libposecartprocess.a  CMakeFiles/posecartprocess.dir/home/robot/posetrack/posecart/PoseCartProcess/PoseCartProcess.cpp.o
+/usr/bin/ranlib libposecartprocess.a

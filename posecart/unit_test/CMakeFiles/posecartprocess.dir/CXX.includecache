@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/robot/posetrack/posecart/PoseCartProcess/PoseCartProcess.cpp
+PoseCartProcess.h
+/home/robot/posetrack/posecart/PoseCartProcess/PoseCartProcess.h
+
+/home/robot/posetrack/posecart/PoseCartProcess/PoseCartProcess.h
+
