@@ -10,7 +10,7 @@ void setup() {
 }
 
 void loop() {
-  process.update();
+  //process.update();
   //Serial.println( RCtime(sensorPin) );
   Serial.println( RCtime(sensorPin) );
   delay(10);

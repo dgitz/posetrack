@@ -1,7 +1,7 @@
 #ifndef POSECARTPROCESS_H
 #define POSECARTPROCESS_H
-#define MAX_PATTERNS_PER_TRACK 24
-#define MAX_TRACKS 64
+#define MAX_PATTERNS_PER_TRACK 8
+#define MAX_TRACKS 32
 #define TRACK_365007 1
 #define SENSOR_HIGH 100//Highest value, this should be when the Sensor is on the GAP
 #define SENSOR_LOW 30 //Lowest value, this should be when Sensor is on the RAIL
@@ -11,19 +11,19 @@
 struct TrackPattern
 {
 	//TrackPattern is a segment of rails and gaps that each have the same width
-	int rail_index;
-	long rail_width_mil; //milli-inch
-	long gap_width_mil; //milli-inch
+	char rail_index;
+	char rail_width_mil; //milli-inch.  Max is 255
+	char gap_width_mil; //milli-inch
 };
 struct Track
 {
-	long PN;
-	int direction; //-1: left 0: straight 1: right
-	int curvature_inches;
+	char PN;
+	char direction; //-1: left 0: straight 1: right
+	int curvature_mil;
 	TrackPattern patterns[MAX_PATTERNS_PER_TRACK];
-	int pattern_count;
-	int rail_count;
-	long track_length_mil; //Spec length, far left rail to far right rail
+	char pattern_count;
+	char rail_count;
+	int track_length_mil; //Spec length, far left rail to far right rail
 
 };
 struct Pose

@@ -24,7 +24,7 @@ PoseCartProcess::PoseCartProcess()
 
 	Track_365007.PN = 365007;
 	Track_365007.track_length_mil = 8895;
-	Track_365007.curvature_inches = 0;
+	Track_365007.curvature_mil = 0;
 	int pattern_index = 0;
 	{
 		TrackPattern pattern;
