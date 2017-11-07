@@ -6,3 +6,11 @@
 
 #IncludeRegexTransform: 
 
+/home/robot/posetrack/posecart/PoseCartProcess/PoseCartProcess.h
+
+/home/robot/posetrack/posecart/unit_test/test_posecartprocess.cpp
+gtest/gtest.h
+-
+../PoseCartProcess/PoseCartProcess.h
+/home/robot/posetrack/posecart/PoseCartProcess/PoseCartProcess.h
+
