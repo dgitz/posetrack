@@ -11,18 +11,18 @@
 struct TrackPattern
 {
 	//TrackPattern is a segment of rails and gaps that each have the same width
-	char rail_index;
-	char rail_width_mil; //milli-inch.  Max is 255
-	char gap_width_mil; //milli-inch
+	unsigned char rail_index;
+	unsigned char rail_width_mil; //milli-inch.  Max is 255
+	unsigned char gap_width_mil; //milli-inch
 };
 struct Track
 {
-	char PN;
+	unsigned char PN;
 	char direction; //-1: left 0: straight 1: right
-	int curvature_mil;
+	unsigned int curvature_mil;
 	TrackPattern patterns[MAX_PATTERNS_PER_TRACK];
-	char pattern_count;
-	char rail_count;
+	unsigned char pattern_count;
+	unsigned char rail_count;
 	int track_length_mil; //Spec length, far left rail to far right rail
 
 };
@@ -41,22 +41,22 @@ class PoseCartProcess
 		bool init(); //Call this method and then create all Tracks
 		void reset_pose() { pose.x_mil = 0; pose.y_mil = 0; pose.yaw_mdeg = 0; }
 		Pose get_pose() { return pose; }
-		Track get_definedtrack(int track_id);
+		Track get_definedtrack(unsigned char track_id);
 		bool trackbuild_complete() { track_index = 0; }
-		bool new_track(Track track_)
+		bool new_track(unsigned char tracktype)
 		{
-			tracks[track_index++] = track_;
+			tracks[track_index++] = tracktype;
 			track_count++;
 			if(track_index > MAX_TRACKS) { return false; } else { return true; }
 		}
 		bool init_posetrack(); //Call this method and all Tracks will be created automatically.
-		long compute_tracklength(Track t);
+		long compute_tracklength(unsigned char id);
 		long compute_alltracklength();
 		long get_traverseddistance() { return traversed_distance_mil; }
 		void new_sensorvalue(int v);
 	private:
 		TrackPattern get_trackpatterninfo(int trackindex,int railindex);
-		Track tracks[MAX_TRACKS];
+		unsigned tracks[MAX_TRACKS];
 		int track_index;
 		int track_rail_index;
 		int track_count;

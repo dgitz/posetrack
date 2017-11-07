@@ -1,5 +1,5 @@
 #include "PoseCartProcess.h"
-//#include <stdio.h>
+#include <stdio.h>
 
 bool PoseCartProcess::init()
 {
@@ -22,7 +22,7 @@ PoseCartProcess::PoseCartProcess()
 	traversed_distance_mil = 0;
 	//Initialize all known Tracks
 
-	Track_365007.PN = 365007;
+	Track_365007.PN = TRACK_365007;
 	Track_365007.track_length_mil = 8895;
 	Track_365007.curvature_mil = 0;
 	int pattern_index = 0;
@@ -85,11 +85,13 @@ PoseCartProcess::PoseCartProcess()
 	Track_365007.pattern_count = pattern_index;
 
 }
-long PoseCartProcess::compute_tracklength(Track t)
+long PoseCartProcess::compute_tracklength(unsigned char id)
 {
+	Track t = get_definedtrack(id);
 	long length = 0;
 	for(int i = 0; i < (t.pattern_count-1);i++)
 	{
+
 		int rail_count = t.patterns[i+1].rail_index - t.patterns[i].rail_index;
 		length += rail_count * (t.patterns[i].rail_width_mil + t.patterns[i].gap_width_mil);
 	}
@@ -105,7 +107,7 @@ long PoseCartProcess::compute_alltracklength()
 	}
 	return length;
 }
-Track PoseCartProcess::get_definedtrack(int track_id)
+Track PoseCartProcess::get_definedtrack(unsigned char track_id)
 {
 	if(track_id == TRACK_365007)
 	{
@@ -153,7 +155,7 @@ void PoseCartProcess::new_sensorvalue(int v)
 		//printf("Gap Triggered: %d %d\n",track_rail_index,traversed_distance_mil);
 		track_rail_index++;
 
-		if(track_rail_index > (tracks[track_index].rail_count-1)) //Next track
+		if(track_rail_index > (get_definedtrack(tracks[track_index]).rail_count-1)) //Next track
 		{
 			track_rail_index = 0;
 			track_index++;
@@ -167,7 +169,8 @@ void PoseCartProcess::new_sensorvalue(int v)
 }
 TrackPattern PoseCartProcess::get_trackpatterninfo(int trackindex,int railindex)
 {
-	Track track = tracks[trackindex];
+	unsigned char id = tracks[trackindex];
+	Track track = get_definedtrack(id);
 	if(railindex <= track.patterns[0].rail_index)
 	{
 		return track.patterns[0];
