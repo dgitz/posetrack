@@ -3,14 +3,14 @@
 TEST(AllTracks,Initialization)
 {
     PoseCartProcess process;
-    ASSERT_EQ(process.compute_tracklength(process.get_definedtrack(TRACK_365007)),process.get_definedtrack(TRACK_365007).track_length_mil);
+    ASSERT_EQ(process.compute_tracklength(TRACK_365007),process.get_definedtrack(TRACK_365007).track_length_mil);
 }
 TEST(Pose,IndividualTracks)
 {
 	{//Track: 365007
 		PoseCartProcess process;
 		process.init();
-		ASSERT_TRUE(process.new_track(process.get_definedtrack(TRACK_365007)));
+		ASSERT_TRUE(process.new_track(TRACK_365007));
 		process.trackbuild_complete();
 		process.reset_pose();
 		double dt = .01; //inches

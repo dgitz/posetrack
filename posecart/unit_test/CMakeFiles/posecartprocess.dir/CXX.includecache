@@ -9,6 +9,8 @@
 /home/robot/posetrack/posecart/PoseCartProcess/PoseCartProcess.cpp
 PoseCartProcess.h
 /home/robot/posetrack/posecart/PoseCartProcess/PoseCartProcess.h
+stdio.h
+-
 
 /home/robot/posetrack/posecart/PoseCartProcess/PoseCartProcess.h
 
