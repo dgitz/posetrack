@@ -8,6 +8,13 @@
 #define UNDEFINED 0
 #define RAIL 1
 #define GAP 2
+#define PI 3.14159265359
+#define DESKTOP 0
+#define ARDUINO 1
+#define ENVIRONMENT DESKTOP //DESKTOP,ARDUINO
+#if ENVIRONMENT == DESKTOP
+#include <math.h>
+#endif
 struct TrackPattern
 {
 	//TrackPattern is a segment of rails and gaps that each have the same width
@@ -18,7 +25,6 @@ struct TrackPattern
 struct Track
 {
 	unsigned char PN;
-	char direction; //-1: left 0: straight 1: right
 	unsigned int curvature_mil;
 	TrackPattern patterns[MAX_PATTERNS_PER_TRACK];
 	unsigned char pattern_count;
@@ -54,7 +60,7 @@ class PoseCartProcess
 		long compute_tracklength(unsigned char id);
 		long compute_alltracklength();
 		long get_traverseddistance() { return traversed_distance_mil; }
-		void new_sensorvalue(int v);
+		void new_sensorvalue(int v,int trackdirection);
 		int get_railindex() { return track_rail_index; }
 		int get_trackindex() { return track_index; }
 		bool get_trackcomplete() { return trackcollection_complete; }

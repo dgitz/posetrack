@@ -3,6 +3,7 @@
 TEST(AllTracks,Initialization)
 {
     PoseCartProcess process;
+    printf("%d %d\n",process.compute_tracklength(TRACK_365007),process.get_definedtrack(TRACK_365007).track_length_mil);
     ASSERT_EQ(process.compute_tracklength(TRACK_365007),process.get_definedtrack(TRACK_365007).track_length_mil);
 }
 TEST(Pose,IndividualTracks)
@@ -20,7 +21,7 @@ TEST(Pose,IndividualTracks)
 		while(time < 5.0)
 		{
 			time += dt;
-			process.new_sensorvalue(sensor_value);
+			process.new_sensorvalue(sensor_value,0);
 			if(sensor_direction == true){	sensor_value += 5; 	}
 			else { sensor_value -= 5; }
 			if(sensor_value > (SENSOR_HIGH + 10)){ sensor_direction = false; }
@@ -58,7 +59,7 @@ TEST(Pose,TrackCollections)
 		{
 			if(process.get_trackcomplete() == true) { break; }
 			time += dt;
-			process.new_sensorvalue(sensor_value);
+			process.new_sensorvalue(sensor_value,0);
 			if(sensor_direction == true){	sensor_value += 5; 	}
 			else { sensor_value -= 5; }
 			if(sensor_value > (SENSOR_HIGH + 10)){ sensor_direction = false; }

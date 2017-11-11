@@ -94,13 +94,20 @@ long PoseCartProcess::compute_tracklength(unsigned char id)
 {
 	Track t = get_definedtrack(id);
 	long length = 0;
-	for(int i = 0; i < (t.pattern_count-1);i++)
+	printf("count: %d\n",t.pattern_count);
+	int railindex = 0;
+	length += (t.patterns[0].rail_width_mil + t.patterns[0].gap_width_mil);
+	printf("v: %d %d %d\n",length);
+	for(int i = 1; i < (t.pattern_count-1);i++)
 	{
 
 		int rail_count = t.patterns[i+1].rail_index - t.patterns[i].rail_index;
+		railindex += rail_count;
 		length += rail_count * (t.patterns[i].rail_width_mil + t.patterns[i].gap_width_mil);
+		printf("v: %d %d %d\n",railindex,rail_count,length);
 	}
-	length += (t.patterns[t.pattern_count-1].rail_width_mil + t.patterns[t.pattern_count-1].gap_width_mil);
+	length += (t.patterns[t.pattern_count].rail_width_mil + t.patterns[t.pattern_count].gap_width_mil);
+	printf("v: %d %d\n",railindex,length);
 	return length;
 }
 long PoseCartProcess::compute_alltracklength()
@@ -127,8 +134,9 @@ Track PoseCartProcess::get_definedtrack(unsigned char track_id)
 		return empty;
 	}
 }
-void PoseCartProcess::new_sensorvalue(int v)
+void PoseCartProcess::new_sensorvalue(int v,int trackdirection)
 {
+	long dl = 0;
 	if((trackcollection_complete == true) and (loop_track == false))
 	{
 		run_update = false;
@@ -154,6 +162,7 @@ void PoseCartProcess::new_sensorvalue(int v)
 
 			TrackPattern pattern = get_trackpatterninfo(track_index,track_rail_index);
 			traversed_distance_mil += pattern.rail_width_mil;
+			dl = pattern.rail_width_mil;
 			//printf("Rail Triggered: %d %d\n",track_rail_index,traversed_distance_mil);
 
 
@@ -163,6 +172,7 @@ void PoseCartProcess::new_sensorvalue(int v)
 
 			TrackPattern pattern = get_trackpatterninfo(track_index,track_rail_index);
 			traversed_distance_mil += pattern.gap_width_mil;
+			dl = pattern.gap_width_mil;
 			//printf("Gap Triggered: %d %d\n",track_rail_index,traversed_distance_mil);
 			track_rail_index++;
 
@@ -182,6 +192,26 @@ void PoseCartProcess::new_sensorvalue(int v)
 				}
 			}
 		}
+		Track t = get_definedtrack(tracks[track_index]);
+		float dtheta = 0.0;
+		if(t.curvature_mil == 0)
+		{
+		}
+		else
+		{
+			dtheta = (float)(dl)/t.curvature_mil;
+			if(trackdirection == -1){ dtheta *= -1.0; }
+			pose.yaw_mdeg += (long)(dtheta*180000.0/PI);
+		}
+		float d = (float)dl;
+		float yaw_rad = (float)(pose.yaw_mdeg*PI/180000.0);
+//#if ENVIRONMENT == DESKTOP
+		float dx = dl*cos(yaw_rad);
+		float dy = dl*sin(yaw_rad);
+		pose.x_mil += (long)(dx);
+		pose.y_mil += (long)(dy);
+//#elif ENVIRONMENT == ARDUINO
+//#endif
 	}
 	last_sensorvalue = v;
 }
