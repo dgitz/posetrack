@@ -12,11 +12,14 @@ bool PoseCartProcess::init_posetrack()
 PoseCartProcess::PoseCartProcess()
 {
 	track_index = 0;
-	track_rail_index = 0;
+	track_rail_index = 1;
 	pose.x_mil = 0;
 	pose.y_mil = 0;
 	pose.yaw_mdeg = 0;
 	track_count = 0;
+	loop_track = false;
+	trackcollection_complete = false;
+	run_update = true;
 	gaporrail = GAP; //Initial condition is before the first rail, sensor on the gap
 	last_sensorvalue = SENSOR_HIGH;
 	traversed_distance_mil = 0;
@@ -28,39 +31,32 @@ PoseCartProcess::PoseCartProcess()
 	int pattern_index = 0;
 	{
 		TrackPattern pattern;
-		pattern.rail_index = 0;
+		pattern.rail_index = 1;
 		pattern.rail_width_mil = 100;
 		pattern.gap_width_mil = 145;
 		Track_365007.patterns[pattern_index++] = pattern;
 	}
 	{
 		TrackPattern pattern;
-		pattern.rail_index = 1;
+		pattern.rail_index = 2;
 		pattern.rail_width_mil = 100;
 		pattern.gap_width_mil = 140;
 		Track_365007.patterns[pattern_index++] = pattern;
 	}
 	{
 		TrackPattern pattern;
-		pattern.rail_index = 2;
+		pattern.rail_index = 3;
 		pattern.rail_width_mil = 95;
 		pattern.gap_width_mil = 150;
 		Track_365007.patterns[pattern_index++] = pattern;
 	}
 	{
 			TrackPattern pattern;
-			pattern.rail_index = 32;
+			pattern.rail_index = 33;
 			pattern.rail_width_mil = 95;
 			pattern.gap_width_mil = 150;
 			Track_365007.patterns[pattern_index++] = pattern;
 		}
-	{
-		TrackPattern pattern;
-		pattern.rail_index = 33;
-		pattern.rail_width_mil = 95;
-		pattern.gap_width_mil = 140;
-		Track_365007.patterns[pattern_index++] = pattern;
-	}
 	{
 		TrackPattern pattern;
 		pattern.rail_index = 34;
@@ -71,18 +67,27 @@ PoseCartProcess::PoseCartProcess()
 	{
 		TrackPattern pattern;
 		pattern.rail_index = 35;
-		pattern.rail_width_mil = 100;
-		pattern.gap_width_mil = 145;
+		pattern.rail_width_mil = 95;
+		pattern.gap_width_mil = 140;
 		Track_365007.patterns[pattern_index++] = pattern;
 	}
 	{
 		TrackPattern pattern;
 		pattern.rail_index = 36;
 		pattern.rail_width_mil = 100;
-		pattern.gap_width_mil = 0; //Last rail doesn't have a gap
+		pattern.gap_width_mil = 145;
+		Track_365007.patterns[pattern_index++] = pattern;
+	}
+	{
+		TrackPattern pattern;
+		pattern.rail_index = 37;
+		pattern.rail_width_mil = 100;
+		pattern.gap_width_mil = 80; //Last rail doesn't have a gap
 		Track_365007.patterns[pattern_index++] = pattern;
 	}
 	Track_365007.pattern_count = pattern_index;
+	Track_365007.rail_count = Track_365007.patterns[pattern_index-1].rail_index;
+	Track_365007.last_gap = Track_365007.patterns[pattern_index-1].gap_width_mil;
 
 }
 long PoseCartProcess::compute_tracklength(unsigned char id)
@@ -124,44 +129,57 @@ Track PoseCartProcess::get_definedtrack(unsigned char track_id)
 }
 void PoseCartProcess::new_sensorvalue(int v)
 {
-	bool rail_triggered = false;
-	bool gap_triggered = false;
-	if((last_sensorvalue < SENSOR_HIGH) and (v >= SENSOR_HIGH)) //Triggered for RAIL
+	if((trackcollection_complete == true) and (loop_track == false))
 	{
-		rail_triggered = true;
+		run_update = false;
 	}
-	else if((last_sensorvalue > SENSOR_LOW) and (v <= SENSOR_LOW)) //Triggered for GAP
+	if(run_update == true)
 	{
-		gap_triggered = true;
-	}
-	else //No trigger
-	{
-
-	}
-	if(rail_triggered) //Could be start of next rail or next track
-	{
-
-		TrackPattern pattern = get_trackpatterninfo(track_index,track_rail_index);
-		traversed_distance_mil += pattern.rail_width_mil;
-		//printf("Rail Triggered: %d %d\n",track_rail_index,traversed_distance_mil);
-
-
-	}
-	if(gap_triggered)
-	{
-
-		TrackPattern pattern = get_trackpatterninfo(track_index,track_rail_index);
-		traversed_distance_mil += pattern.gap_width_mil;
-		//printf("Gap Triggered: %d %d\n",track_rail_index,traversed_distance_mil);
-		track_rail_index++;
-
-		if(track_rail_index > (get_definedtrack(tracks[track_index]).rail_count-1)) //Next track
+		bool rail_triggered = false;
+		bool gap_triggered = false;
+		if((last_sensorvalue < SENSOR_HIGH) and (v >= SENSOR_HIGH)) //Triggered for RAIL
 		{
-			track_rail_index = 0;
-			track_index++;
-			if(track_index > (track_count-1)) //End of all tracks.  Set back to 0
+			rail_triggered = true;
+		}
+		else if((last_sensorvalue > SENSOR_LOW) and (v <= SENSOR_LOW)) //Triggered for GAP
+		{
+			gap_triggered = true;
+		}
+		else //No trigger
+		{
+
+		}
+		if(rail_triggered) //Could be start of next rail or next track
+		{
+
+			TrackPattern pattern = get_trackpatterninfo(track_index,track_rail_index);
+			traversed_distance_mil += pattern.rail_width_mil;
+			//printf("Rail Triggered: %d %d\n",track_rail_index,traversed_distance_mil);
+
+
+		}
+		if(gap_triggered)
+		{
+
+			TrackPattern pattern = get_trackpatterninfo(track_index,track_rail_index);
+			traversed_distance_mil += pattern.gap_width_mil;
+			//printf("Gap Triggered: %d %d\n",track_rail_index,traversed_distance_mil);
+			track_rail_index++;
+
+			if(track_rail_index > (get_definedtrack(tracks[track_index]).rail_count)) //Next track
 			{
-				track_index = 0;
+				track_rail_index = 1;
+				track_index++;
+				if(track_index > (track_count-1)) //End of all tracks.  Set back to 0
+				{
+					trackcollection_complete = true;
+					//traversed_distance_mil -= pattern.gap_width_mil;
+					track_index = 0;
+				}
+				else
+				{
+					trackcollection_complete = false;
+				}
 			}
 		}
 	}
@@ -175,10 +193,10 @@ TrackPattern PoseCartProcess::get_trackpatterninfo(int trackindex,int railindex)
 	{
 		return track.patterns[0];
 	}
-	int rail = track.patterns[0].rail_index;
+	int rail = track.patterns[0].rail_index-1;
 	for(int i = 1; i < track.pattern_count;i++)
 	{
-		rail += track.patterns[i].rail_index;
+		rail = track.patterns[i].rail_index;
 		if((railindex > track.patterns[i-1].rail_index) and (railindex <= rail))
 		{
 			return track.patterns[i];

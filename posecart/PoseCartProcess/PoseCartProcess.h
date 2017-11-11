@@ -24,6 +24,7 @@ struct Track
 	unsigned char pattern_count;
 	unsigned char rail_count;
 	int track_length_mil; //Spec length, far left rail to far right rail
+	int last_gap; //Gap between current track and next track
 
 };
 struct Pose
@@ -54,6 +55,10 @@ class PoseCartProcess
 		long compute_alltracklength();
 		long get_traverseddistance() { return traversed_distance_mil; }
 		void new_sensorvalue(int v);
+		int get_railindex() { return track_rail_index; }
+		int get_trackindex() { return track_index; }
+		bool get_trackcomplete() { return trackcollection_complete; }
+
 	private:
 		TrackPattern get_trackpatterninfo(int trackindex,int railindex);
 		unsigned tracks[MAX_TRACKS];
@@ -64,7 +69,9 @@ class PoseCartProcess
 		int gaporrail;
 		int last_sensorvalue;
 		Pose pose;
-
+		bool loop_track;
+		bool trackcollection_complete;
+		bool run_update;
 		Track Track_365007;
 
 

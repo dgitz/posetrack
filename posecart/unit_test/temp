@@ -1,0 +1,157 @@
+Note: Google Test filter = *TrackCollections
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from Pose
+[ RUN      ] Pose.TrackCollections
+Rail Triggered: 1 100
+Gap Triggered: 1 245
+got: 2 1 2 100 140
+Rail Triggered: 2 345
+got: 2 1 2 100 140
+Gap Triggered: 2 485
+got: 3 2 3 95 150
+Rail Triggered: 3 580
+got: 3 2 3 95 150
+Gap Triggered: 3 730
+got: 4 3 33 95 150
+Rail Triggered: 4 825
+got: 4 3 33 95 150
+Gap Triggered: 4 975
+got: 5 3 33 95 150
+Rail Triggered: 5 1070
+got: 5 3 33 95 150
+Gap Triggered: 5 1220
+got: 6 3 33 95 150
+Rail Triggered: 6 1315
+got: 6 3 33 95 150
+Gap Triggered: 6 1465
+got: 7 3 33 95 150
+Rail Triggered: 7 1560
+got: 7 3 33 95 150
+Gap Triggered: 7 1710
+got: 8 3 33 95 150
+Rail Triggered: 8 1805
+got: 8 3 33 95 150
+Gap Triggered: 8 1955
+got: 9 3 33 95 150
+Rail Triggered: 9 2050
+got: 9 3 33 95 150
+Gap Triggered: 9 2200
+got: 10 3 33 95 150
+Rail Triggered: 10 2295
+got: 10 3 33 95 150
+Gap Triggered: 10 2445
+got: 11 3 33 95 150
+Rail Triggered: 11 2540
+got: 11 3 33 95 150
+Gap Triggered: 11 2690
+got: 12 3 33 95 150
+Rail Triggered: 12 2785
+got: 12 3 33 95 150
+Gap Triggered: 12 2935
+got: 13 3 33 95 150
+Rail Triggered: 13 3030
+got: 13 3 33 95 150
+Gap Triggered: 13 3180
+got: 14 3 33 95 150
+Rail Triggered: 14 3275
+got: 14 3 33 95 150
+Gap Triggered: 14 3425
+got: 15 3 33 95 150
+Rail Triggered: 15 3520
+got: 15 3 33 95 150
+Gap Triggered: 15 3670
+got: 16 3 33 95 150
+Rail Triggered: 16 3765
+got: 16 3 33 95 150
+Gap Triggered: 16 3915
+got: 17 3 33 95 150
+Rail Triggered: 17 4010
+got: 17 3 33 95 150
+Gap Triggered: 17 4160
+got: 18 3 33 95 150
+Rail Triggered: 18 4255
+got: 18 3 33 95 150
+Gap Triggered: 18 4405
+got: 19 3 33 95 150
+Rail Triggered: 19 4500
+got: 19 3 33 95 150
+Gap Triggered: 19 4650
+got: 20 3 33 95 150
+Rail Triggered: 20 4745
+got: 20 3 33 95 150
+Gap Triggered: 20 4895
+got: 21 3 33 95 150
+Rail Triggered: 21 4990
+got: 21 3 33 95 150
+Gap Triggered: 21 5140
+got: 22 3 33 95 150
+Rail Triggered: 22 5235
+got: 22 3 33 95 150
+Gap Triggered: 22 5385
+got: 23 3 33 95 150
+Rail Triggered: 23 5480
+got: 23 3 33 95 150
+Gap Triggered: 23 5630
+got: 24 3 33 95 150
+Rail Triggered: 24 5725
+got: 24 3 33 95 150
+Gap Triggered: 24 5875
+got: 25 3 33 95 150
+Rail Triggered: 25 5970
+got: 25 3 33 95 150
+Gap Triggered: 25 6120
+got: 26 3 33 95 150
+Rail Triggered: 26 6215
+got: 26 3 33 95 150
+Gap Triggered: 26 6365
+got: 27 3 33 95 150
+Rail Triggered: 27 6460
+got: 27 3 33 95 150
+Gap Triggered: 27 6610
+got: 28 3 33 95 150
+Rail Triggered: 28 6705
+got: 28 3 33 95 150
+Gap Triggered: 28 6855
+got: 29 3 33 95 150
+Rail Triggered: 29 6950
+got: 29 3 33 95 150
+Gap Triggered: 29 7100
+got: 30 3 33 95 150
+Rail Triggered: 30 7195
+got: 30 3 33 95 150
+Gap Triggered: 30 7345
+got: 31 3 33 95 150
+Rail Triggered: 31 7440
+got: 31 3 33 95 150
+Gap Triggered: 31 7590
+got: 32 3 33 95 150
+Rail Triggered: 32 7685
+got: 32 3 33 95 150
+Gap Triggered: 32 7835
+got: 33 3 33 95 150
+Rail Triggered: 33 7930
+got: 33 3 33 95 150
+Gap Triggered: 33 8080
+got: 34 4 34 95 140
+Rail Triggered: 34 8175
+got: 34 4 34 95 140
+Gap Triggered: 34 8315
+got: 35 5 35 95 140
+Rail Triggered: 35 8410
+got: 35 5 35 95 140
+Gap Triggered: 35 8550
+got: 36 6 36 100 145
+Rail Triggered: 36 8650
+got: 36 6 36 100 145
+Gap Triggered: 36 8795
+got: 37 7 37 100 0
+Rail Triggered: 37 8895
+got: 37 7 37 100 0
+Gap Triggered: 37 8895
+[       OK ] Pose.TrackCollections (0 ms)
+[----------] 1 test from Pose (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test case ran. (0 ms total)
+[  PASSED  ] 1 test.
